@@ -1,2 +1,9 @@
-# engeto_automation_testing_project
-Druhý finální project Engeto Testing Akademie - Automatizace testu pomocí Playwright frameworku v Pythonu
+# ⚡ engeto automation testing project
+🏆 Druhý finální project Engeto Testing Akademie <br/>
+➖ Automatizace testů <br/>
+➖ Testování UI <br/>
+
+
+## 🔧 Použité nástroje <br/>
+🚨 Python <br/>
+🚨 Playwright framework <br/>
