@@ -8,3 +8,13 @@
 🚨 Python <br/>
 🚨 Pytest <br/>
 🚨 Playwright framework <br/>
+
+## ▶️ Spuštění testů <br/>
+🔵 Spuštění všech testů <br/>
+```
+pytest playwright_tests/ -s
+```
+🔵 Spuštění konkrétního testu (např. test_engeto_web.py) <br/>
+```
+pytest playwright_tests/test_engeto_web.py -s
+```
