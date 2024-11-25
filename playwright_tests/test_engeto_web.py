@@ -17,11 +17,11 @@ def page(browser):
     yield page
     page.close()
 
+
 def test_cookies(page):
     print("Navigating to engeto.cz")
     page.goto("https://engeto.cz/")
         
-
     print("Verifying existing cookies")
     cookies_alert = page.locator("#cookiescript_injected")
     assert cookies_alert.is_visible(), "Cookies alert is not visible"
@@ -36,6 +36,7 @@ def test_cookies(page):
     print("Cookies accepted")
     cookies_accept = cookies_alert.get_by_role("button", name="Chápu a přijímám!")
     cookies_accept.click()
+
 
 def test_homepage_content(page):
     print("Navigating to engeto.cz")
@@ -59,6 +60,7 @@ def test_homepage_content(page):
 
     print("Verifying navigation menu")
     assert page.is_visible("#top-navigation"), "Navigation is not visible"
+
 
 def test_add_to_cart(page):
     print("Navigating to engeto.cz")

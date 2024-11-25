@@ -1,10 +1,10 @@
 import pytest
 from playwright.sync_api import sync_playwright
 
-@pytest.fixture()
-def browser():
+@pytest.fixture(params=["chromium", "firefox"])
+def browser(request):
     with sync_playwright() as playwright:
-        browser = playwright.firefox.launch(
+        browser = getattr(playwright, request.param).launch(
             headless=False,
             slow_mo=3000
         )
@@ -73,6 +73,16 @@ def test_navigation_menu(page):
 
 
 def test_form_submission(page):
+
+    dialog_messages = []
+
+    def handle_dialog(dialog):
+        print(f"Dialog appeared with message: {dialog.message}")
+        dialog_messages.append(dialog.message)
+        dialog.accept()
+
+    page.on("dialog", handle_dialog)
+
     print("Navigating to cvoxdesign.com Kontakt")
     page.goto("https://cvoxdesign.com/#contact")
 
@@ -81,10 +91,13 @@ def test_form_submission(page):
     page.fill("input[id='email']", "test@tester.cz")
     page.fill("textarea[id='message']", "This is a test message :)")
 
-    page.on("dialog", lambda dialog: print(dialog.message))
     print("Submitting form")
     page.click("text=Odeslat zprávu")
-    print("Accepting dialog")
+
+    page.wait_for_timeout(100)
+
+    print("Checking if popup dialog is present")
+    assert len(dialog_messages) > 0, "No dialog appeared after form submission"
 
 
 def test_empty_form_submission(page):
