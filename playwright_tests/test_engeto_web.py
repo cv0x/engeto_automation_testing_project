@@ -37,6 +37,8 @@ def test_cookies(page):
     cookies_accept = cookies_alert.get_by_role("button", name="Chápu a přijímám!")
     cookies_accept.click()
 
+    print("test_cookies passed ✅")
+
 
 def test_homepage_content(page):
     print("Navigating to engeto.cz")
@@ -60,6 +62,8 @@ def test_homepage_content(page):
 
     print("Verifying navigation menu")
     assert page.is_visible("#top-navigation"), "Navigation is not visible"
+
+    print("test_homepage_content passed ✅")
 
 
 def test_add_to_cart(page):
@@ -89,4 +93,6 @@ def test_add_to_cart(page):
     assert page.url == "https://engeto.cz/cart/", "We are not in cart"
 
     print("Verifying product in cart")
-    assert page.is_visible("body > main > div.woocommerce > form > table > tbody > tr.woocommerce-cart-form__cart-item.cart_item > td.product-remove > a"), "Product is not in cart"
+    assert page.is_visible("text=has been added to your cart"), "Product is not in cart"
+
+    print("test_add_to_cart passed ✅")
