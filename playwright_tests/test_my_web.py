@@ -14,6 +14,14 @@ def browser(request):
 @pytest.fixture()
 def page(browser):
     page = browser.new_page()
+    page.set_viewport_size({"width": 1920, "height": 1080})
+    yield page
+    page.close()
+
+@pytest.fixture()
+def mobile_page(browser):
+    page = browser.new_page()
+    page.set_viewport_size({"width": 390, "height": 844})
     yield page
     page.close()
 
@@ -39,6 +47,8 @@ def test_page_load(page):
 
     print("Verifying social bar")
     assert page.is_visible("#home > div.home-content > div.social"), "social bar is not visible"
+
+    print("test_page_load passed ✅")
 
 
 def test_navigation_menu(page):  
@@ -70,6 +80,8 @@ def test_navigation_menu(page):
     print("Navigating to Kontakt")
     page.click("text=Kontakt")
     assert page.url == "https://cvoxdesign.com/#contact", "Navigation to Kontakt failed"
+    
+    print("test_navigation_menu passed ✅")
 
 
 def test_form_submission(page):
@@ -99,6 +111,8 @@ def test_form_submission(page):
     print("Checking if popup dialog is present")
     assert len(dialog_messages) > 0, "No dialog appeared after form submission"
 
+    print("test_form_submission passed ✅")
+
 
 def test_empty_form_submission(page):
     print("Navigating to cvoxdesign.com Kontakt")
@@ -107,3 +121,29 @@ def test_empty_form_submission(page):
     print("sending an empty form")
     page.click("text=Odeslat zprávu")
     assert page.is_visible("text=Please fill out this field"), "Validation error not shown"
+
+    print("test_empty_form_submission passed ✅")
+
+
+def test_mobile_viewport(mobile_page):
+    print("Navigating to cvoxdesign.com on mobile")
+    mobile_page.goto("https://cvoxdesign.com/")
+    assert mobile_page.viewport_size == {"width": 390, "height": 844}, "Viewport size is incorrect"
+
+    print("test_mobile_viewport passed ✅")
+
+
+def test_mobile_hamburger_menu(mobile_page):
+    print("Navigating to cvoxdesign.com on mobile")
+    mobile_page.goto("https://cvoxdesign.com/")
+
+    print("checking if hamburger menu is visible")
+    assert mobile_page.is_visible("#menu-icon"), "Hamburger menu is not visible on mobile"
+
+    print("Clicking on hamburger menu")
+    mobile_page.click("#menu-icon")
+
+    print("checking if hamburger menu opened")
+    assert mobile_page.is_visible(".navbar.active"), "Hamburger menu did not open on mobile"
+
+    print("test_mobile_hamburger_menu passed ✅")
